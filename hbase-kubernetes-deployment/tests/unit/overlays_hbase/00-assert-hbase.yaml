@@ -1,0 +1,57 @@
+#
+# Asserts on the HBase portion of the deployment.
+#
+---
+# assert that there is a `ConfigMap` named "hbase-configuration-XXX"
+# TODO: kuttl does not support generated names
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: hbase-configuration-c94h8k249d
+---
+# assert that there is a `ConfigMap` named "hbck2-configuration-XXX"
+# TODO: kuttl does not support generated names
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: hbck2-configuration-c94h8k249d
+---
+# assert that there is a `StatefulSet` named "master" that it provides pods labeled role:master
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: master
+spec:
+  template:
+    metadata:
+      labels:
+        role: master
+---
+# assert that there is a `Service` named "master" pointing to pods labeled role:master
+apiVersion: v1
+kind: Service
+metadata:
+  name: master
+spec:
+  selector:
+    role: master
+---
+# assert that there is a `StatefulSet` named "regionserver" that it provides pods labeled role:regionserver
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: regionserver
+spec:
+  template:
+    metadata:
+      labels:
+        role: regionserver
+---
+# assert that there is a `Service` named "regionserver" pointing to pods labeled role:regionserver
+apiVersion: v1
+kind: Service
+metadata:
+  name: regionserver
+spec:
+  selector:
+    role: regionserver

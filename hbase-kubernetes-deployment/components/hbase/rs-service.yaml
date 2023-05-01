@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: regionserver
+  labels:
+    jmxexporter: enabled
+spec:
+  selector:
+    role: regionserver
+  clusterIP: None
+  ports:
+  - name: jmxexporter
+    port: 7000

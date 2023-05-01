@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: master
+  labels:
+    jmxexporter: enabled
+spec:
+  selector:
+    role: master
+  clusterIP: None
+  ports:
+  - name: jmxexporter
+    port: 7000

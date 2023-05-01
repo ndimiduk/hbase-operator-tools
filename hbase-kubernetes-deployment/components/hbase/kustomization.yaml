@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+commonLabels:
+  app: hadoop
+
+configMapGenerator:
+- name: hbase-configuration
+  files:
+  - hbase-site.xml
+  - hadoop-metrics2-hbase.properties
+  - log4j2.properties=log4j2.properties.hbase
+- name: hbck2-configuration
+  # Add an hbck2-configuration. Uses log4j1 vs log4j2.
+  files:
+  - hbase-site.xml
+  - hadoop-metrics2-hbase.properties
+  - log4j.properties=log4j.properties.hbase
+
+resources:
+- m-service.yaml
+- m-statefulset.yaml
+- rs-service.yaml
+- rs-statefulset.yaml
