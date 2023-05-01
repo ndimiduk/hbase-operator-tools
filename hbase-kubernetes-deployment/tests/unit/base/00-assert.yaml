@@ -1,0 +1,57 @@
+---
+# assert that there is a `ConfigMap` named "environment"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: environment
+---
+# assert that there is a `ConfigMap` named "global-files"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: global-files
+# TODO: kuttl has no means to express `any` value, so cannot assert on data keys.
+#data:
+#  java.security: ...
+#  jmxexporter.yaml: ...
+#  ssl-client.xml: ...
+#  ssl-server.xml: ...
+---
+# assert that there is a `ConfigMap` named "hadoop-configuration-XXX"
+# TODO: kuttl does not support generated names
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: hadoop-configuration-c94h8k249d
+# TODO: kuttl has no means to express `any` value, so cannot assert on data keys.
+#data:
+#  log4j.properties: ...
+---
+# assert that there is a `ConfigMap` named "scripts"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scripts
+# TODO: kuttl has no means to express `any` value, so cannot assert on data keys.
+#data:
+#  apiserver_access.sh: ...
+#  ...
+---
+# assert that there is a `Secret` named "keystore-password"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keystore-password
+type: Opaque
+---
+# assert that there is a `Service` names "hadoop"
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop
+---
+# assert that there is a `Job` named "delete-format-hdfs-configmap"
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: delete-format-hdfs-configmap

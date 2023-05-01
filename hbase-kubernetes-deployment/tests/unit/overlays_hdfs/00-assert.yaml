@@ -1,0 +1,58 @@
+---
+# assert that there is a `ConfigMap` named "hadoop-configuration-XXX"
+# TODO: kuttl does not support generated names
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: hadoop-configuration-c94h8k249d
+# TODO: kuttl has no means to express `any` value, so cannot assert on data keys.
+#data:
+#  log4j.properties: ...
+#  hdfs-site.xml: ...
+#  core-site.xml: ...
+---
+# assert that there is a `PodDisruptionBudget` named "namenode"
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: namenode
+---
+# assert that there is a `StatefulSet` named "namenode" that it provides pods labeled role:namenode
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: namenode
+spec:
+  template:
+    metadata:
+      labels:
+        role: namenode
+---
+# assert that there is a `Service` named "namenode" pointing to pods labeled role:namenode
+apiVersion: v1
+kind: Service
+metadata:
+  name: namenode
+spec:
+  selector:
+    role: namenode
+---
+# assert that there is a `StatefulSet` named "datanode" that it provides pods labeled role:datanode
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: datanode
+spec:
+  template:
+    metadata:
+      labels:
+        role: datanode
+---
+# assert that there is a `Service` named "datanode" pointing to pods labeled role:datanode
+apiVersion: v1
+kind: Service
+metadata:
+  name: datanode
+spec:
+  selector:
+    role: datanode

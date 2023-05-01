@@ -28,3 +28,7 @@ linklint/
 awscli-exe*
 *.tar.gz
 *.sig
+
+# detritus produced by kuttl
+kubeconfig*
+kuttl-report-*.xml

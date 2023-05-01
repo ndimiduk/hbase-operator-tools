@@ -1,0 +1,87 @@
+# Service and ServiceAccount names are hard-coded as 'hadoop'.
+# RBAC Role name is also hard-coded as 'hadoop-role'.  Service selects on
+# an app named 'hadoop', another hard-coding.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hadoop-role
+rules:
+- resources:
+  - configmaps
+  verbs:
+  - get
+  - delete
+  - list
+  apiGroups:
+  - ''
+- resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  apiGroups:
+  - ''
+- resources:
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  apiGroups:
+  - 'apps'
+  - 'api'
+- resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - delete
+  - watch
+  apiGroups:
+  - ''
+- resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+  apiGroups:
+  - coordination.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hadoop-role-binding
+subjects:
+- kind: ServiceAccount
+  name: hadoop
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hadoop-role
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hadoop
+---
+# Headless-service to cluster all our pods under
+# Matches the ServiceAccount above referenced by statefulsets
+# in their serviceName.
+# See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id
+# This is required for statefulsets. See https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#limitations
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  selector:
+    app: hadoop

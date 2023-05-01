@@ -1,0 +1,9 @@
+# Test runner using https://kuttl.dev
+---
+apiVersion: kuttl.dev/v1beta1
+kind: TestSuite
+startControlPlane: true
+testDirs:
+- ./tests/unit
+reportName: kuttl-report-unit
+reportFormat: xml

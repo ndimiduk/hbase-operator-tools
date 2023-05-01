@@ -1,0 +1,17 @@
+# Test runner using KUTTL against a target cluster.
+# https://kuttl.dev
+# https://kind.sigs.k8s.io
+---
+# Does not use Kuttl's built-in KIND support -- it doesn't quite work correctly with a VM-based
+# (Docker Desktop) style of runtime. Instead, assumes the cluster is established outside of kuttl
+# and configuration is provided via `--env`.
+apiVersion: kuttl.dev/v1beta1
+kind: TestSuite
+testDirs:
+- ./tests/integration
+timeout:
+  # these tests allocate several pods with dependencies between them, allow some time for
+  # everything to launch and settle.
+  300
+reportName: kuttl-report-integration
+reportFormat: xml

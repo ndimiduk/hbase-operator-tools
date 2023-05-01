@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: namenode
+  labels:
+    jmxexporter: enabled
+spec:
+  selector:
+    role: namenode
+  clusterIP: None
+  ports:
+  - name: jmxexporter
+    port: 8000
