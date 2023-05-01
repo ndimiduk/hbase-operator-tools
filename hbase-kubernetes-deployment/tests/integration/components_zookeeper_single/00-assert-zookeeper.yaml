@@ -1,0 +1,11 @@
+#
+# Asserts on the ZooKeeper portion of the deployment.
+#
+---
+# assert that there is a `StatefulSet` named "zookeeper" that has one live instance.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+status:
+  availableReplicas: 1

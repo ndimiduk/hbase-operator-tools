@@ -1,0 +1,34 @@
+#
+# Asserts on the ZooKeeper portion of the deployment.
+#
+---
+# assert that there is a `ConfigMap` named "zookeeper-scripts-XXX"
+# TODO: kuttl does not support generated names
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: zookeeper-scripts-c94h8k249d
+---
+# assert that there is a `ConfigMap` named "zookeeper-quorum"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zookeeper-quorum
+---
+# assert that there is a `PodDisruptionBudget` named "zookeeper-pdb"
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: zookeeper-pdb
+---
+# assert that there is a `StatefulSet` named "zookeeper" that:
+# - provides pods labeled role:zookeeper
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+spec:
+  template:
+    metadata:
+      labels:
+        role: zookeeper

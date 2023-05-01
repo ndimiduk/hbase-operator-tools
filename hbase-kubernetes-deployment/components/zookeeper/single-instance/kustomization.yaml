@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+configMapGenerator:
+- name: zookeeper-scripts
+  files:
+  - start.sh
+# Publish where the zk ensemble can be found.
+- name: zookeeper-quorum
+  literals:
+    # Hard-coded. Default we expect a simple standalone zk at this location.
+    # One define is for hbase, the other for hadoop.
+    - HBASE_ZOOKEEPER_QUORUM="zookeeper-0.zookeeper-headless"
+    - HA_ZOOKEEPER_QUORUM="zookeeper-0.zookeeper-headless:2181"
+  options:
+    disableNameSuffixHash: true
+
+resources:
+- zookeeper.yaml
