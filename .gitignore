@@ -21,3 +21,10 @@ linklint-*.zip
 linklint/
 .checkstyle
 **/.checkstyle
+
+# kubernetes download artifacts
+*kubectl*
+*checksums.txt
+awscli-exe*
+*.tar.gz
+*.sig
