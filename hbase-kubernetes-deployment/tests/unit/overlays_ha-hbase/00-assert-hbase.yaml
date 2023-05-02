@@ -1,0 +1,19 @@
+#
+# Asserts on the HBase portion of the deployment.
+#
+---
+# assert that there is a `StatefulSet` named "master" that has 2 replicas
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: master
+spec:
+  replicas: 2
+---
+# assert that there is a `StatefulSet` named "regionserver" that has 5 replicas
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: regionserver
+spec:
+  replicas: 5

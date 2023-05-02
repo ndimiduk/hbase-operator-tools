@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  # Must repeat common labels and images in each overlay; can't inherit to keep each overlay independent
+  # https://github.com/kubernetes-sigs/kustomize/issues/915
+  app: hadoop
+
+replicas:
+- name: master
+  count: 2
+- name: regionserver
+  count: 5
+
+components:
+# Mix-in hbase as component so we inherit from ha-hdfs.
+- ../../components/hbase
+
+resources:
+- ../ha-hdfs
