@@ -1,0 +1,46 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+replicas:
+- name: datanode
+  count: 5
+- name: namenode
+  count: 3
+
+commonLabels:
+  app: hadoop
+
+configMapGenerator:
+- name: hadoop-configuration
+  # Put in place HA config in place of base hdfs-site.xml
+  behavior: merge
+  files:
+  - hdfs-site.xml
+- name: environment
+  behavior: merge
+  literals:
+  - DFS_REPLICATION=3
+  # Hard-coded. Five QJMs. Here we point at 5 Service instances defined in adjacent jn-service.yaml.
+  - QJOURNAL="qjournal://journalnode-0:8485;journalnode-1:8485;journalnode-2:8485;journalnode-3:8485;journalnode-4:8485/hadoop"
+
+patches:
+- target:
+    group: "apps"
+    version: v1
+    kind: StatefulSet
+    name: namenode
+  path: nn-statefulset-patch.yaml
+- target:
+    group: "apps"
+    version: v1
+    kind: StatefulSet
+    name: datanode
+  path: dn-statefulset-patch.yaml
+
+components:
+- ../../components/zookeeper/ha-ensemble
+
+resources:
+- jn-statefulset.yaml
+- jn-service.yaml
+- ../hdfs

@@ -1,0 +1,27 @@
+#
+# Asserts on the HDFS portion of the deployment.
+#
+---
+# assert that there is a `StatefulSet` named "namenode" that has 3 live instance
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: namenode
+status:
+  availableReplicas: 3
+---
+# assert that there is a `StatefulSet` named "journalnode" that has 5 live instance
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: journalnode
+status:
+  availableReplicas: 5
+---
+# assert that there is a `StatefulSet` named "datanode" that has one 5 instance
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: datanode
+status:
+  availableReplicas: 5

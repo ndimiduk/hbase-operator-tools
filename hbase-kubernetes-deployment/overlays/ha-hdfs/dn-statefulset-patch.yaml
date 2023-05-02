@@ -1,0 +1,10 @@
+---
+- op: replace
+  # Using replace. 'add' seems to replace anyways.
+  path: /spec/template/spec/affinity/podAntiAffinity
+  value:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchLabels:
+          role: datanode
+      topologyKey: kubernetes.io/hostname

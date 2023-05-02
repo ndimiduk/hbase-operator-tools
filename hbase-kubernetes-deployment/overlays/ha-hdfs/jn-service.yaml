@@ -1,0 +1,108 @@
+# Put a Service in front of each journalnode so ip doesn't change on nn.
+# The service is at journal-?.svc.domain. The pod
+# it is proxying will will be at journal-?.${env.HADOOP_SERVICE}.NAMESPACE.svc.domain.
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: journalnode-0
+  labels:
+    # So helm prometheus standalone install will scrape this jn
+    jmxexporter: enabled
+spec:
+  ports:
+  - port: 8480
+    name: http
+  - port: 8481
+    name: https
+  - port: 8485
+    name: rpc
+  - port: 8000
+    name: jmxexporter
+  selector:
+    role: journalnode
+    statefulset.kubernetes.io/pod-name: journalnode-0
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: journalnode-1
+  labels:
+    # So helm prometheus standalone install will scrape this jn
+    jmxexporter: enabled
+spec:
+  ports:
+  - port: 8480
+    name: http
+  - port: 8481
+    name: https
+  - port: 8485
+    name: rpc
+  - port: 8000
+    name: jmxexporter
+  selector:
+    role: journalnode
+    statefulset.kubernetes.io/pod-name: journalnode-1
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: journalnode-2
+  labels:
+    # So helm prometheus standalone install will scrape this jn
+    jmxexporter: enabled
+spec:
+  ports:
+  - port: 8480
+    name: http
+  - port: 8481
+    name: https
+  - port: 8485
+    name: rpc
+  - port: 8000
+    name: jmxexporter
+  selector:
+    role: journalnode
+    statefulset.kubernetes.io/pod-name: journalnode-2
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: journalnode-3
+  labels:
+    # So helm prometheus standalone install will scrape this jn
+    jmxexporter: enabled
+spec:
+  ports:
+  - port: 8480
+    name: http
+  - port: 8481
+    name: https
+  - port: 8485
+    name: rpc
+  - port: 8000
+    name: jmxexporter
+  selector:
+    role: journalnode
+    statefulset.kubernetes.io/pod-name: journalnode-3
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: journalnode-4
+  labels:
+    # So helm prometheus standalone install will scrape this jn
+    jmxexporter: enabled
+spec:
+  ports:
+  - port: 8480
+    name: http
+  - port: 8481
+    name: https
+  - port: 8485
+    name: rpc
+  - port: 8000
+    name: jmxexporter
+  selector:
+    role: journalnode
+    statefulset.kubernetes.io/pod-name: journalnode-4
