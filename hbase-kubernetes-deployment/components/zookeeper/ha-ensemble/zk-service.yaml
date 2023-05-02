@@ -1,0 +1,114 @@
+# Put a Service in front of each zookeeper so ip doesn't change on clients/admin.
+# The service is at zookeeper-?.svc.domain. The pod
+# it is proxying will be at zookeeper-?.${env.ZOOKEEPER_HEADLESS_SERVICE}.NAMESPACE.svc.domain.
+# TODO: Port for prometheus to scape.
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zookeeper-0
+  labels:
+    # So helm prometheus standalone install will scrape this zk; TODO
+    # jmxexporter: enabled
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 2888
+    name: server
+  - port: 3888
+    name: leader-election
+  - port: 8080
+    name: http
+  selector:
+    role: zookeeper
+    statefulset.kubernetes.io/pod-name: zookeeper-0
+    cluster: zookeeper
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zookeeper-1
+  labels:
+    # So helm prometheus standalone install will scrape this zk; TODO
+    # jmxexporter: enabled
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 2888
+    name: server
+  - port: 3888
+    name: leader-election
+  - port: 8080
+    name: http
+  selector:
+    role: zookeeper
+    statefulset.kubernetes.io/pod-name: zookeeper-1
+    cluster: zookeeper
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zookeeper-2
+  labels:
+    # So helm prometheus standalone install will scrape this zk; TODO
+    # jmxexporter: enabled
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 2888
+    name: server
+  - port: 3888
+    name: leader-election
+  - port: 8080
+    name: http
+  selector:
+    role: zookeeper
+    statefulset.kubernetes.io/pod-name: zookeeper-2
+    cluster: zookeeper
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zookeeper-3
+  labels:
+    # So helm prometheus standalone install will scrape this zk; TODO
+    # jmxexporter: enabled
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 2888
+    name: server
+  - port: 3888
+    name: leader-election
+  - port: 8080
+    name: http
+  selector:
+    role: zookeeper
+    statefulset.kubernetes.io/pod-name: zookeeper-3
+    cluster: zookeeper
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zookeeper-4
+  labels:
+    # So helm prometheus standalone install will scrape this zk; TODO
+    # jmxexporter: enabled
+spec:
+  ports:
+  - port: 2181
+    name: client
+  - port: 2888
+    name: server
+  - port: 3888
+    name: leader-election
+  - port: 8080
+    name: http
+  selector:
+    role: zookeeper
+    statefulset.kubernetes.io/pod-name: zookeeper-4
+    cluster: zookeeper

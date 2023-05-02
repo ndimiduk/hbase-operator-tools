@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+replicas:
+- name: zookeeper
+  count: 5
+
+configMapGenerator:
+- name: zookeeper-quorum
+  behavior: merge
+  literals:
+  # Hard-coded. Default we expect a simple standalone zk at this location.
+  # One define is for hbase, the other for hadoop.
+  - HBASE_ZOOKEEPER_QUORUM="zookeeper-0,zookeeper-1,zookeeper-2,zookeeper-3,zookeeper-4"
+  - HA_ZOOKEEPER_QUORUM="zookeeper-0:2181,zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181,zookeeper-4:2181"
+  options:
+    disableNameSuffixHash: true
+
+patches:
+- target:
+    kind: StatefulSet
+    name: zookeeper
+  path: patch-zookeeper.yaml
+
+components:
+- ../single-instance
+
+resources:
+- zk-service.yaml

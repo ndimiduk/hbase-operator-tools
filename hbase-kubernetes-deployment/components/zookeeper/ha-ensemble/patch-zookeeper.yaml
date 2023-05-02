@@ -1,0 +1,36 @@
+---
+- # increase container resource allocations
+  op: replace
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      cpu: '1.0'
+      memory: 1Gi
+    limits:
+      cpu: '2.0'
+      memory: 4Gi
+- # update the launch command
+  op: add
+  path: /spec/template/spec/containers/0/command
+  value:
+  - sh
+  - -c
+  - |-
+    # Make the heap be a fraction of the requested memory size.
+    # Make 'servers' count agree with replicas count.
+    /usr/bin/zookeeper/start.sh --servers=5 --percentage=50 --max_client_cnxns=300 --quorum_listen_on_all_ips=true
+- # increase storage volume size
+  op: replace
+  path: /spec/volumeClaimTemplates/0/spec/resources/requests/storage
+  value: 5Gi
+- # specify pod scheduling anti-affinity
+  op: add
+  path: /spec/template/spec/affinity
+  value:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app: hadoop
+            role: zookeeper
+        topologyKey: kubernetes.io/hostname
